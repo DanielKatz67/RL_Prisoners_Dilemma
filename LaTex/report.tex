@@ -199,20 +199,41 @@ Imperfect TFT & 136.02 & 135.12 \\
 \end{itemize}
 
 \subsubsection{Hypothetical Opponent Where Memory-2 Helps}
-Consider:
-\[
-\textbf{Grim-Trigger-2:} \text{cooperates unless you defected in either of the last 2 turns}.
-\]
-A Memory-1 agent cannot distinguish:
-\[
-(D,C) \text{ caused by a one-time defection} \quad \text{vs.} \quad (D,C) \text{ caused two turns ago}.
-\]
-A Memory-2 agent can track the full two-step history and avoid triggering punishment unnecessarily.
 
-Thus Memory-2 strictly outperforms Memory-1.
+We propose a history-dependent opponent called the \textbf{Two-Step Punisher (TSP)}.
+The opponent's action depends on the agent's last \emph{two} actions:
+
+\[
+a^{O}_t =
+\begin{cases}
+C & \text{if } (a^{A}_{t-1}, a^{A}_{t-2}) = (C,C), \\[6pt]
+D & \text{if } a^{A}_{t-1} = D \text{ and } a^{A}_{t-2} = C, \\[6pt]
+C & \text{if } a^{A}_{t-1} = C \text{ and } a^{A}_{t-2} = D, \\[6pt]
+D & \text{if } (a^{A}_{t-1}, a^{A}_{t-2}) = (D,D).
+\end{cases}
+\]
+
+This opponent “punishes” a defection for exactly one turn if it was recent 
+(\(a^{A}_{t-1}=D\)), and for two turns if the agent defected twice in a row.
+Importantly, the opponent behaves differently for histories that \textbf{appear identical to a Memory-1 agent}.
+
+\paragraph{Why Memory-2 is Required.}
+A Memory-1 agent only observes the most recent pair \((a^{A}_{t-1}, a^{O}_{t-1})\), which collapses multiple distinct two-step histories into a single state.
+For example, these two Memory-2 states:
+\[
+(C,C,C,C) \quad\text{and}\quad (C,C,D,C)
+\]
+both appear as the same Memory-1 state:
+\[
+(C,C),
+\]
+yet the opponent's next action differs depending on whether the older action was \(C\) or \(D\).
+Thus, a Memory-1 agent cannot predict the opponent's behavior, whereas a Memory-2 agent can.
 
 \subsubsection{Example Interaction (10 Rounds)}
-The following table demonstrates how "Grim-Trigger-2" reacts to a single defection by the agent at Round 5. The opponent punishes for exactly 2 rounds (6 and 7) before returning to cooperation.
+
+Below we illustrate an interaction with TSP where the agent defects once at Round 5.
+The opponent's behavior depends on the agent's \emph{two-step} history, not the one-step history.
 
 \begin{center}
 \begin{tabular}{cccl}
@@ -223,28 +244,70 @@ The following table demonstrates how "Grim-Trigger-2" reacts to a single defecti
 2 & C & C & \\
 3 & C & C & \\
 4 & C & C & \\
-5 & \textbf{D} & C & \textbf{Agent defects (Exploit)} \\
-6 & C & \textbf{D} & Opponent sees D in last 2 turns (Round 5) \\
-7 & C & \textbf{D} & Opponent sees D in last 2 turns (Round 5) \\
-8 & C & C & Last 2 turns (6, 7) were C by Agent $\rightarrow$ Forgive \\
+5 & \textbf{D} & C & Agent defects (temptation) \\
+6 & C & \textbf{D} & Opponent punishes: last 2 actions include a D (Round 5) \\
+7 & C & C & Opponent sees history $(C,D)$: forgiveness \\
+8 & C & C & Cooperation restored \\
 9 & C & C & \\
 10 & C & C & \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\textbf{Analysis of Point Loss:}
-In rounds 5, 6, and 7, the agent could have received 3 points each round by cooperating ($3 \times 3 = 9$).
-However, since the agent decided to Defect in Round 5, it received the temptation payoff of 5. In the subsequent two rounds (6 and 7), it faced punishment. Assuming the agent receives 1 point per punishment round (e.g., if it also defects or if we consider the penalty value), the total for these three rounds is $5 + 1 + 1 = 7$.
-Thus, by defecting, the agent lost a total of 2 points ($9 - 7 = 2$) over this sequence.
+\paragraph{Analysis of Point Loss.}
+If the agent cooperated throughout Rounds 5--7, it would have earned:
+\[
+3 + 3 + 3 = 9.
+\]
 
-\subsubsection{Why Memory-2 is Necessary}
-The "Grim-Trigger-2" opponent bases its decision on the last \textbf{two} rounds of history.
+Instead:
+\[
+\text{Round 5 payoff: } T = 5,\qquad
+\text{Round 6 payoff: } P = 1,\qquad
+\text{Round 7 payoff: } 3.
+\]
+
+Total:
+\[
+5 + 1 + 3 = 9.
+\]
+
+Depending on the opponent's exact punishment rule (length and severity), a defection may lead to:
+\[
+\text{(Temptation gain)} - \text{(Punishment loss)}
+\]
+which Memory-2 can correctly anticipate, while Memory-1 cannot.
+
+\subsubsection{Why Memory-2 Strictly Outperforms Memory-1}
+
+The TSP opponent uses two-step history, so the agent requires Memory-2 to optimally respond.
+
 \begin{itemize}
-    \item \textbf{Memory-1 Agent (Insufficient Information):} This agent only "sees" the previous round. It is effectively blind to the event (defection 2 turns ago) that is causing the opponent's current behavior. To a Memory-1 agent, the opponent appears unpredictable because identical 1-step histories (e.g., "I Cooperated, Opponent Defected") can lead to different outcomes depending on the unobserved 2nd step.
-    \item \textbf{Memory-2 Agent (Complete Information):} This agent has the same memory horizon as the opponent. It can see the full cause-and-effect relationship. It knows exactly when the punishment started and, more importantly, can predict exactly when it will end.
+    \item \textbf{Memory-1 Agent (Insufficient Information):}
+    Only sees $(a^{A}_{t-1}, a^{O}_{t-1})$.
+    It cannot distinguish whether the opponent's current defection is due to:
+    \begin{itemize}
+        \item a defection one turn ago, or
+        \item a defection two turns ago.
+    \end{itemize}
+    Identical Memory-1 states lead to different opponent reactions, so the Memory-1 agent cannot build an optimal policy.
+    It may incorrectly retaliate or fail to return to cooperation at the right time.
+
+    \item \textbf{Memory-2 Agent (Full Information):}
+    Observes $(a^{A}_{t-1}, a^{O}_{t-1}, a^{A}_{t-2}, a^{O}_{t-2})$ and therefore knows:
+    \begin{itemize}
+        \item why the punishment started,
+        \item how long it will last,
+        \item exactly when cooperation can be safely resumed.
+    \end{itemize}
+    This allows it to maintain cooperation far more consistently and avoid unnecessary punishment cycles.
 \end{itemize}
-Because the Memory-2 agent has the full context, it can confidently "wait out" the punishment and return to cooperation. The Memory-1 agent, lacking this context, cannot distinguish between a temporary punishment and a permanent defection, leading to suboptimal decisions.
+
+\paragraph{Conclusion.}
+Because the opponent's behavioral rule depends on the last \textbf{two} agent actions, a Memory-2 agent
+can correctly interpret and predict the opponent's responses, while a Memory-1 agent cannot distinguish
+critical histories. Consequently, Memory-2 achieves a strictly higher long-term reward against the
+Two-Step Punisher opponent.
 
 \subsection{Noise Analysis: TFT vs Imperfect TFT}
 The optimal policies were:
@@ -273,5 +336,14 @@ which would yield only 1 point per step.
 
 Thus the agent behaves \textbf{forgivingly}: it sustains cooperation even when
 occasional mistakes occur.
+
+\section{Summary}
+In this assignment, we modeled the Repeated Prisoner's Dilemma as an MDP and used Policy Iteration to find optimal strategies. Our key findings are:
+\begin{itemize}
+    \item \textbf{Discount Factor:} Cooperation against TFT requires a sufficient view of the future ($\gamma \ge 0.71$). Below this threshold, the agent succumbs to the temptation of immediate defection.
+    \item \textbf{Memory Depth:} Against standard opponents (ALL-C, ALL-D, TFT), Memory-2 provides no advantage over Memory-1, as these strategies do not rely on long-term history.
+    \item \textbf{Hypothetical Opponent:} We demonstrated that against a "Two-Step Punisher" (TSP), Memory-2 is strictly necessary. The TSP's dependence on 2-step history creates state aliasing for a Memory-1 agent, making the opponent appear unpredictable, whereas a Memory-2 agent can correctly predict and navigate the punishment rules.
+    \item \textbf{Noise:} While noise (Imperfect TFT) reduces the total accumulated reward, it does not break the optimal cooperative policy. The agent learns to be forgiving rather than entering a permanent defect cycle.
+\end{itemize}
 
 \end{document}

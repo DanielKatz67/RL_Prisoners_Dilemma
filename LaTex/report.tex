@@ -9,8 +9,7 @@
 
 \title{Assignment 1: Policy Iteration in the Repeated Prisoner's Dilemma\\
 \large RL2026A}
-\author{Student 1 (ID1) \\ Student 2 (ID2)}
-\date{\today}
+\author{Daniel Katz (315114991) \\ Avital Fine (208253823)}
 
 \begin{document}
 \maketitle
@@ -150,29 +149,54 @@ We varied $\gamma$ and computed the optimal strategy against TFT.
 \textbf{Cooperation becomes optimal when } \gamma \ge 0.71.
 \]
 
-For $\gamma < 0.71$, the agent is too short-sighted and defects to exploit the immediate
-temptation payoff $T = 5$.
+\subsubsection{Why lower $\gamma$ forces Defection?}
+A lower discount factor $\gamma$ means the agent values immediate rewards significantly more than future rewards.
+Against TFT, cooperation yields a steady stream of $R=3$. Defection yields an immediate temptation $T=5$, but triggers punishment $P=1$ in subsequent rounds.
+If the agent is "short-sighted" (low $\gamma$), the immediate gain of $5$ outweighs the long-term loss of falling from $3$ to $1$.
+To find the exact threshold where cooperation becomes optimal, we utilized the \texttt{run\_analysis} function.
+We iterated through a range of $\gamma$ values (from 0.1 to 0.99). For each $\gamma$, we ran Policy Iteration to find the optimal policy against a TFT opponent.
+We then checked if the resulting policy was "ALL-C" (Cooperate in all states). The first $\gamma$ for which the optimal policy switched to ALL-C was identified as the threshold.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{average_reward_vs_gamma.png}
+    \caption{Average Cumulative Reward vs. Discount Factor ($\gamma$) for TFT.}
+    \label{fig:rewards_vs_gamma}
+\end{figure}
 
 \subsection{Memory Depth Comparison}
 We measured average cumulative reward over 50 episodes (each 50 steps).
 The results:
 
 \begin{center}
-\begin{tabular}{lccc}
+\begin{tabular}{lcc}
 \toprule
-\textbf{Opponent} & Memory-1 & Memory-2 & Better? \\
+\textbf{Opponent} & \textbf{Memory-1 Score} & \textbf{Memory-2 Score} \\
 \midrule
-ALL-C          & 250.00 & 250.00 & No \\
-ALL-D          & 50.00  & 50.00  & No \\
-TFT            & 150.00 & 150.00 & No \\
-Imperfect TFT  & 136.02 & 135.12 & No \\
+ALL-C & 250.0 & 250.0 \\
+ALL-D & 50.0 & 50.0 \\
+TFT & 225.0 & 225.0 \\
+Imperfect TFT & 136.02 & 135.12 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{memory_depth_comparison.png}
+    \caption{Comparison of Average Cumulative Rewards for Memory-1 vs. Memory-2 agents.}
+    \label{fig:memory_depth_comparison}
+\end{figure}
+
+
+
 \subsubsection{Interpretation}
-Memory-2 did not outperform Memory-1 for any opponent.
-This matches theoretical expectations: none of the four opponents use a history longer than one step, so additional memory provides no advantage.
+\begin{itemize}
+    \item \textbf{ALL-C (Score 250):} The optimal policy against ALL-C is to always Defect. Since ALL-C always Cooperates, the agent receives the temptation payoff $T=5$ in every round. Over 50 rounds, the total reward is $50 \times 5 = 250$.
+    \item \textbf{ALL-D (Score 50):} The optimal policy against ALL-D is to always Defect. Since ALL-D always Defects, the agent receives the punishment payoff $P=1$ in every round. Over 50 rounds, the total reward is $50 \times 1 = 50$. Cooperating would yield the sucker's payoff $S=0$, which is worse.
+    \item \textbf{Memory-1 vs Memory-2 (Deterministic Opponents):} For ALL-C, ALL-D, and TFT, the scores for Memory-1 and Memory-2 are identical. This is because these opponents' strategies depend only on the immediate past (or no history at all). Having an extra step of memory (Memory-2) provides no additional predictive power or strategic advantage against them.
+    \item \textbf{Imperfect TFT (Stochastic Differences):} For Imperfect TFT, the scores differ slightly (136.02 vs 135.12) despite the optimal policy being the same (Cooperate). This difference is due to the stochastic nature of the opponent (10\% noise). The variance in random outcomes across the 50 simulation episodes leads to slightly different average rewards, but statistically, the performance is equivalent.
+\end{itemize}
 
 \subsubsection{Hypothetical Opponent Where Memory-2 Helps}
 Consider:
@@ -186,6 +210,41 @@ A Memory-1 agent cannot distinguish:
 A Memory-2 agent can track the full two-step history and avoid triggering punishment unnecessarily.
 
 Thus Memory-2 strictly outperforms Memory-1.
+
+\subsubsection{Example Interaction (10 Rounds)}
+The following table demonstrates how "Grim-Trigger-2" reacts to a single defection by the agent at Round 5. The opponent punishes for exactly 2 rounds (6 and 7) before returning to cooperation.
+
+\begin{center}
+\begin{tabular}{cccl}
+\toprule
+\textbf{Round} & \textbf{Agent} & \textbf{Opponent} & \textbf{Explanation} \\
+\midrule
+1 & C & C & Initial cooperation \\
+2 & C & C & \\
+3 & C & C & \\
+4 & C & C & \\
+5 & \textbf{D} & C & \textbf{Agent defects (Exploit)} \\
+6 & C & \textbf{D} & Opponent sees D in last 2 turns (Round 5) \\
+7 & C & \textbf{D} & Opponent sees D in last 2 turns (Round 5) \\
+8 & C & C & Last 2 turns (6, 7) were C by Agent $\rightarrow$ Forgive \\
+9 & C & C & \\
+10 & C & C & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Analysis of Point Loss:}
+In rounds 5, 6, and 7, the agent could have received 3 points each round by cooperating ($3 \times 3 = 9$).
+However, since the agent decided to Defect in Round 5, it received the temptation payoff of 5. In the subsequent two rounds (6 and 7), it faced punishment. Assuming the agent receives 1 point per punishment round (e.g., if it also defects or if we consider the penalty value), the total for these three rounds is $5 + 1 + 1 = 7$.
+Thus, by defecting, the agent lost a total of 2 points ($9 - 7 = 2$) over this sequence.
+
+\subsubsection{Why Memory-2 is Necessary}
+The "Grim-Trigger-2" opponent bases its decision on the last \textbf{two} rounds of history.
+\begin{itemize}
+    \item \textbf{Memory-1 Agent (Insufficient Information):} This agent only "sees" the previous round. It is effectively blind to the event (defection 2 turns ago) that is causing the opponent's current behavior. To a Memory-1 agent, the opponent appears unpredictable because identical 1-step histories (e.g., "I Cooperated, Opponent Defected") can lead to different outcomes depending on the unobserved 2nd step.
+    \item \textbf{Memory-2 Agent (Complete Information):} This agent has the same memory horizon as the opponent. It can see the full cause-and-effect relationship. It knows exactly when the punishment started and, more importantly, can predict exactly when it will end.
+\end{itemize}
+Because the Memory-2 agent has the full context, it can confidently "wait out" the punishment and return to cooperation. The Memory-1 agent, lacking this context, cannot distinguish between a temporary punishment and a permanent defection, leading to suboptimal decisions.
 
 \subsection{Noise Analysis: TFT vs Imperfect TFT}
 The optimal policies were:
@@ -214,20 +273,5 @@ which would yield only 1 point per step.
 
 Thus the agent behaves \textbf{forgivingly}: it sustains cooperation even when
 occasional mistakes occur.
-
-\section{Executive Summary}
-\begin{itemize}
-    \item Cooperation becomes optimal against TFT when $\gamma \ge 0.71$.
-    \item Memory-2 provided no advantage against any of the four assignment opponents.
-    \item A hypothetical ``Grim-Trigger-2'' opponent would make Memory-2 strictly better.
-    \item Imperfect TFT reduces long-term reward but does \emph{not} break the optimal cooperative policy.
-\end{itemize}
-
-\section*{References}
-\begin{thebibliography}{9}
-\bibitem{assignment}
-RL2026A Assignment 1: Policy Iteration in the Repeated Prisoner's Dilemma.\\
-Provided PDF: RL2026A-Assignment1.pdf \cite{turn0file0}.
-\end{thebibliography}
 
 \end{document}

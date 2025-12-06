@@ -8,8 +8,8 @@ def test_mdp_generation():
     env = RPDEnv(opponent_strategy='ALL-C', memory_depth=1)
     P, R = env.get_mdp()
     
-    assert P.shape == (4, 2, 4)
-    assert R.shape == (4, 2)
+    assert P.shape == (4, 2, 4) # 4 states, 2 actions, 4 next states
+    assert R.shape == (4, 2)    # 4 states, 2 actions
     
     # Check transitions for ALL-C
     # If I cooperate (0), opponent cooperates (0). Outcome (0,0) -> State 0

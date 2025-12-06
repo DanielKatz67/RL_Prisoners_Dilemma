@@ -2,6 +2,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def calculate_state_value(s, a, P, R, V, gamma):
+    """
+    Calculate the value of taking action a in state s.
+    V(s) = R(s, a) + gamma * sum(P(s'|s, a) * V(s'))
+    """
+    n_states = P.shape[0]
+    expected_future_val = 0
+    for next_s in range(n_states):
+        expected_future_val += P[s, a, next_s] * V[next_s]
+        
+    return R[s, a] + gamma * expected_future_val
+
 def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
     """
     Evaluate a policy given an environment's MDP.
@@ -35,13 +47,7 @@ def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
             a = policy[s]
             
             # Bellman Expectation Equation for V_pi
-            # V(s) = R(s, pi(s)) + gamma * sum(P(s'|s, pi(s)) * V(s'))
-            
-            expected_future_val = 0
-            for next_s in range(n_states):
-                expected_future_val += P[s, a, next_s] * V[next_s]
-                
-            new_v = R[s, a] + gamma * expected_future_val
+            new_v = calculate_state_value(s, a, P, R, V, gamma)
             new_V[s] = new_v
             
             delta = max(delta, abs(V[s] - new_v))
@@ -80,15 +86,9 @@ def policy_improvement(V, P, R, gamma):
     
     for s in range(n_states):
         # Find action that maximizes Q(s, a)
-        # Q(s, a) = R(s, a) + gamma * sum(P(s'|s, a) * V(s'))
-        
         action_values = np.zeros(n_actions)
         for a in range(n_actions):
-            expected_future_val = 0
-            for next_s in range(n_states):
-                expected_future_val += P[s, a, next_s] * V[next_s]
-            
-            action_values[a] = R[s, a] + gamma * expected_future_val
+            action_values[a] = calculate_state_value(s, a, P, R, V, gamma)
             
         best_action = np.argmax(action_values)
         new_policy[s] = best_action

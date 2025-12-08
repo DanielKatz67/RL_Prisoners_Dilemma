@@ -27,10 +27,15 @@ and stochasticity influence optimal behavior.
 The Repeated Prisoner's Dilemma (RPD) is one of the canonical environments for studying cooperation,
 strategic behavior, and temporal decision-making. In this assignment, we model the RPD as a Markov
 Decision Process (MDP) fully consistent with the Gymnasium API, and examine how an optimal agent adapts
-its policy against different opponent personalities. We follow the structure of the assignment
-specification (RL2026A-Assignment1.pdf).
+its policy against different opponent personalities.
 
 \section{Part II: MDP Definition}
+
+\subsection{Actions}
+\[
+A = \{C, D\},
+\]
+where $C$ denotes \textbf{Cooperate} and $D$ denotes \textbf{Defect}.
 
 \subsection{State Space}
 We evaluated two observation schemes as required.
@@ -41,37 +46,32 @@ Thus the state space is:
 \[
 S_{\text{M1}} = \{ (C,C), (C,D), (D,C), (D,D) \},
 \]
-with a total of 4 states.
+with a total of 4 states. The initial state is $(C,C)$.
 
 \subsubsection{Memory-2}
 The agent observes its two most recent actions and the opponent’s two most recent actions:
 \[
-s_t = (a_{t-1}^{A}, a_{t-1}^{O}, a_{t-2}^{A}, a_{t-2}^{O}).
+s_t = ((a_{t-2}^{A}, a_{t-2}^{O}), (a_{t-1}^{A}, a_{t-1}^{O})).
 \]
 Since each action is binary, the total state count is:
 \[
 |S_{\text{M2}}| = 2^4 = 16.
 \]
 
-The full list of states (where each state is $(a_{t-1}^{A}, a_{t-1}^{O}, a_{t-2}^{A}, a_{t-2}^{O})$) is:
+The full list of states (where each state is $((a_{t-2}^{A}, a_{t-2}^{O}), (a_{t-1}^{A}, a_{t-1}^{O}))$) is:
 \begin{center}
-\begin{tabular}{cccc}
-(C,C,C,C) & (C,C,C,D) & (C,C,D,C) & (C,C,D,D) \\
-(C,D,C,C) & (C,D,C,D) & (C,D,D,C) & (C,D,D,D) \\
-(D,C,C,C) & (D,C,C,D) & (D,C,D,C) & (D,C,D,D) \\
-(D,D,C,C) & (D,D,C,D) & (D,D,D,C) & (D,D,D,D)
+\begin{tabular}{cc}
+((C,C), (C,C)) & ((C,C), (C,D)) \\
+((C,C), (D,C)) & ((C,C), (D,D)) \\
+((C,D), (C,C)) & ((C,D), (C,D)) \\
+((C,D), (D,C)) & ((C,D), (D,D)) \\
+((D,C), (C,C)) & ((D,C), (C,D)) \\
+((D,C), (D,C)) & ((D,C), (D,D)) \\
+((D,D), (C,C)) & ((D,D), (C,D)) \\
+((D,D), (D,C)) & ((D,D), (D,D))
 \end{tabular}
 \end{center}
-
-Initial states follow the assignment convention:
-\[
-\text{M1 initial: } (C,C), \quad \text{M2 initial: } (C,C,C,C).
-\]
-
-\subsection{Actions}
-\[
-A = \{C, D\}.
-\]
+The initial state is $((C,C), (C,C))$.
 
 \subsection{Transition Probability Function}
 The transition probability $P(s'|s,a)$ defines the probability of moving to state $s'$ given current state $s$ and agent action $a$.
@@ -80,7 +80,7 @@ The transition probability $P(s'|s,a)$ defines the probability of moving to stat
 The new state $s'$ is determined by shifting the history.
 \begin{itemize}
     \item \textbf{Memory-1:} If $s = (a_{t-1}^A, a_{t-1}^O)$ and agent chooses $a_t^A$, the new state is $s' = (a_t^A, a_t^O)$.
-    \item \textbf{Memory-2:} If $s = (a_{t-1}^A, a_{t-1}^O, a_{t-2}^A, a_{t-2}^O)$ and agent chooses $a_t^A$, the new state is $s' = (a_t^A, a_t^O, a_{t-1}^A, a_{t-1}^O)$.
+    \item \textbf{Memory-2:} If $s = ((a_{t-2}^A, a_{t-2}^O), (a_{t-1}^A, a_{t-1}^O))$ and agent chooses $a_t^A$, the new state is $s' = ((a_{t-1}^A, a_{t-1}^O), (a_t^A, a_t^O))$.
 \end{itemize}
 
 In both cases, $a_t^A$ is given by the agent's choice. The opponent's action $a_t^O$ is determined by their strategy policy $\pi_{opp}(s)$.
@@ -143,26 +143,21 @@ Convergence was rapid across all opponents due to the small state space.
 \section{Part IV: Experiments and Analysis}
 
 \subsection{Discount Factor Analysis}
-We varied $\gamma$ and computed the optimal strategy against TFT.
-
-\[
-\textbf{Cooperation becomes optimal when } \gamma \ge 0.71.
-\]
-
-\subsubsection{Why lower $\gamma$ forces Defection?}
-A lower discount factor $\gamma$ means the agent values immediate rewards significantly more than future rewards.
-Against TFT, cooperation yields a steady stream of $R=3$. Defection yields an immediate temptation $T=5$, but triggers punishment $P=1$ in subsequent rounds.
-If the agent is "short-sighted" (low $\gamma$), the immediate gain of $5$ outweighs the long-term loss of falling from $3$ to $1$.
-To find the exact threshold where cooperation becomes optimal, we utilized the \texttt{run\_analysis} function.
-We iterated through a range of $\gamma$ values (from 0.1 to 0.99). For each $\gamma$, we ran Policy Iteration to find the optimal policy against a TFT opponent.
-We then checked if the resulting policy was "ALL-C" (Cooperate in all states). The first $\gamma$ for which the optimal policy switched to ALL-C was identified as the threshold.
+We varied $\gamma$ and computed the optimal strategy against different opponents.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{average_reward_vs_gamma.png}
-    \caption{Average Cumulative Reward vs. Discount Factor ($\gamma$) for TFT.}
+    \includegraphics[width=0.8\textwidth]{average_cumulative_reward_vs_gamma_by_opponent.png}
+    \caption{Average Cumulative Reward vs. Discount Factor ($\gamma$) for different opponent strategies.}
     \label{fig:rewards_vs_gamma}
 \end{figure}
+
+\subsubsection{When and Why Cooperation Becomes Optimal}
+As shown in Figure \ref{fig:rewards_vs_gamma}, for the \textbf{TFT} opponent, there is a clear phase transition.
+At low $\gamma$ values (e.g., 0.1, 0.5), the agent prefers Defection because it values the immediate temptation payoff ($T=5$) more than the long-term stream of cooperation rewards ($R=3$).
+However, as $\gamma$ increases (e.g., 0.9, 0.99), the agent becomes "far-sighted" enough to value the future rewards of mutual cooperation. It realizes that the long-term penalty of getting punished by TFT outweighs the short-term gain of defecting, making \textbf{Cooperation} the optimal policy.
+
+For \textbf{ALL-C} and \textbf{ALL-D}, the optimal policy is always to Defect regardless of $\gamma$, as seen by the constant reward lines. Against ALL-C, defecting exploits the opponent forever. Against ALL-D, defecting is the only defense against being exploited.
 
 \subsection{Memory Depth Comparison}
 We measured average cumulative reward over 50 episodes (each 50 steps).
@@ -221,7 +216,7 @@ Importantly, the opponent behaves differently for histories that \textbf{appear 
 A Memory-1 agent only observes the most recent pair \((a^{A}_{t-1}, a^{O}_{t-1})\), which collapses multiple distinct two-step histories into a single state.
 For example, these two Memory-2 states:
 \[
-(C,C,C,C) \quad\text{and}\quad (C,C,D,C)
+((C,C),(C,C)) \quad\text{and}\quad ((D,C),(C,C))
 \]
 both appear as the same Memory-1 state:
 \[
@@ -294,7 +289,7 @@ The TSP opponent uses two-step history, so the agent requires Memory-2 to optima
     It may incorrectly retaliate or fail to return to cooperation at the right time.
 
     \item \textbf{Memory-2 Agent (Full Information):}
-    Observes $(a^{A}_{t-1}, a^{O}_{t-1}, a^{A}_{t-2}, a^{O}_{t-2})$ and therefore knows:
+    Observes $((a^{A}_{t-2}, a^{O}_{t-2}), (a^{A}_{t-1}, a^{O}_{t-1}))$ and therefore knows:
     \begin{itemize}
         \item why the punishment started,
         \item how long it will last,
@@ -314,7 +309,7 @@ The optimal policies were:
 
 \subsubsection*{TFT}
 \[
-\pi(s) = C \quad \forall s \in \{ (0,0), (0,1), (1,0), (1,1) \}
+\pi(s) = C \quad \forall s
 \]
 
 \subsubsection*{Imperfect TFT}
@@ -338,12 +333,14 @@ Thus the agent behaves \textbf{forgivingly}: it sustains cooperation even when
 occasional mistakes occur.
 
 \section{Summary}
-In this assignment, we modeled the Repeated Prisoner's Dilemma as an MDP and used Policy Iteration to find optimal strategies. Our key findings are:
+This report presented a comprehensive MDP formulation of the Repeated Prisoner's Dilemma. By implementing Policy Iteration, we derived optimal strategies against both deterministic and stochastic opponents.
+
+We found that:
 \begin{itemize}
-    \item \textbf{Discount Factor:} Cooperation against TFT requires a sufficient view of the future ($\gamma \ge 0.71$). Below this threshold, the agent succumbs to the temptation of immediate defection.
-    \item \textbf{Memory Depth:} Against standard opponents (ALL-C, ALL-D, TFT), Memory-2 provides no advantage over Memory-1, as these strategies do not rely on long-term history.
-    \item \textbf{Hypothetical Opponent:} We demonstrated that against a "Two-Step Punisher" (TSP), Memory-2 is strictly necessary. The TSP's dependence on 2-step history creates state aliasing for a Memory-1 agent, making the opponent appear unpredictable, whereas a Memory-2 agent can correctly predict and navigate the punishment rules.
-    \item \textbf{Noise:} While noise (Imperfect TFT) reduces the total accumulated reward, it does not break the optimal cooperative policy. The agent learns to be forgiving rather than entering a permanent defect cycle.
+    \item \textbf{Strategic Foresight:} Cooperation emerges only when the discount factor is high enough, proving that short-term greed is suboptimal in the long run.
+    \item \textbf{Memory Requirements:} While Memory-1 is sufficient for standard strategies, we proved that complex, history-dependent opponents like the \textbf{Two-Step Punisher} require Memory-2. The \textbf{nested state representation} of Memory-2 allows the agent to distinguish histories that appear identical to a Memory-1 agent, enabling optimal punishment avoidance.
+    \item \textbf{Resilience:} The optimal policy remains cooperative even against a noisy \textbf{Imperfect TFT} opponent, demonstrating that forgiveness is a key component of robust long-term strategy.
 \end{itemize}
 
 \end{document}
+

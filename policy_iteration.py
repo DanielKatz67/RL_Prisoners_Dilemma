@@ -1,99 +1,5 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
-
-def calculate_state_value(s, a, P, R, V, gamma):
-    """
-    Calculate the value of taking action a in state s.
-    V(s) = R(s, a) + gamma * sum(P(s'|s, a) * V(s'))
-    """
-    n_states = P.shape[0]
-    expected_future_val = 0
-    for next_s in range(n_states):
-        expected_future_val += P[s, a, next_s] * V[next_s]
-        
-    return R[s, a] + gamma * expected_future_val
-
-def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
-    """
-    Evaluate a policy given an environment's MDP.
-    
-    Args:
-        policy: Array of shape (n_states,) representing the action to take in each state.
-        P: Transition matrix (n_states, n_actions, n_states)
-        R: Reward matrix (n_states, n_actions)
-        V_init: Initial value function array
-        gamma: Discount factor
-        theta: Convergence threshold
-        verbose: Whether to print verbose output
-        
-    Returns:
-        V: Value function array of shape (n_states,)
-    """
-    n_states = P.shape[0]
-    V = V_init.copy()
-    iteration = 0
-    
-    if verbose:
-        print("********Starting new policy evaluation************")
-    
-    while True:
-        delta = 0
-        if verbose:
-            print(f"Iteration of policy evaluation {iteration}:")
-            
-        new_V = V.copy()
-        for s in range(n_states):
-            a = policy[s]
-            
-            # Bellman Expectation Equation for V_pi
-            new_v = calculate_state_value(s, a, P, R, V, gamma)
-            new_V[s] = new_v
-            
-            delta = max(delta, abs(V[s] - new_v))
-            
-        V = new_V
-        
-        if verbose:
-            # Optional: Plotting logic if states are available globally or passed
-            # For now, we skip plotting inside evaluation loop to avoid spam
-            pass
-            
-        iteration += 1
-        
-        if delta < theta:
-            break
-            
-    return V
-
-def policy_improvement(V, P, R, gamma):
-    """
-    Improve the policy given a value function.
-    
-    Args:
-        V: Value function array (n_states,)
-        P: Transition matrix
-        R: Reward matrix
-        gamma: Discount factor
-        
-    Returns:
-        new_policy: Improved policy array
-    """
-    n_states = P.shape[0]
-    n_actions = P.shape[1]
-    
-    new_policy = np.zeros(n_states, dtype=int)
-    
-    for s in range(n_states):
-        # Find action that maximizes Q(s, a)
-        action_values = np.zeros(n_actions)
-        for a in range(n_actions):
-            action_values[a] = calculate_state_value(s, a, P, R, V, gamma)
-            
-        best_action = np.argmax(action_values)
-        new_policy[s] = best_action
-        
-    return new_policy
 
 def policy_iteration(P, R, gamma=0.9, theta=1e-6, verbose=False, states=None):
     """
@@ -115,19 +21,23 @@ def policy_iteration(P, R, gamma=0.9, theta=1e-6, verbose=False, states=None):
     # Step 1: Initialize
     V = np.zeros(n_states)
     policy = np.zeros(n_states, dtype=int)
-    iteration = 0
+    iteration = 1
+
+    if verbose:
+        print("******** Starting new policy iteration for gamma = {} and theta = {} ********".format(gamma, theta))
     
     while True:
         if verbose:
-            print("iteration ", iteration)
-            print(f"\n=== Policy Iteration {iteration} ===")
-            print("Policy:", policy)
+            print(f"======================================\n")
+            print(f"=== Policy Iteration {iteration} ===")
+            print(f"=== Policy: {policy} ===\n")
+            print(f"======================================\n")
             
         # Step 2: Policy Evaluation
         V = policy_evaluation(policy, P, R, V, gamma, theta, verbose)
         
         # Step 3: Policy Improvement
-        new_policy = policy_improvement(V, P, R, gamma)
+        new_policy = policy_improvement(V, P, R, gamma, verbose)
         
         if verbose and states is not None:
             plot_values(states, V, title="Value Function per State")
@@ -142,6 +52,102 @@ def policy_iteration(P, R, gamma=0.9, theta=1e-6, verbose=False, states=None):
         iteration += 1
         
     return policy, V
+
+def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
+    """
+    Evaluate a policy given an environment's MDP.
+    
+    Args:
+        policy: Array of shape (n_states,) representing the action to take in each state.
+        P: Transition matrix (n_states, n_actions, n_states)
+        R: Reward matrix (n_states, n_actions)
+        V_init: Initial value function array
+        gamma: Discount factor
+        theta: Convergence threshold
+        verbose: Whether to print verbose output
+        
+    Returns:
+        V: Value function array of shape (n_states,)
+    """
+    n_states = P.shape[0]
+    V = V_init.copy()
+    iteration = 1
+    
+    if verbose:
+        print("********Starting new policy evaluation************")
+    
+    while True:
+        delta = 0   
+        new_V = V.copy()
+        for s in range(n_states):
+            a = policy[s]
+            
+            # Bellman Expectation Equation for V_pi
+            new_v = calculate_state_value(s, a, P, R, V, gamma)
+            new_V[s] = new_v
+            
+            delta = max(delta, abs(V[s] - new_v))
+            
+        V = new_V
+        
+        if verbose:
+            # Optional: Plotting logic if states are available globally or passed
+            # For now, we skip plotting inside evaluation loop to avoid spam
+            pass
+            
+        iteration += 1
+        
+        if delta < theta:
+            break
+
+    if verbose:
+        print(f"Policy evaluation took {iteration} iterations.")
+            
+    return V
+
+def policy_improvement(V, P, R, gamma, verbose):
+    """
+    Improve the policy given a value function.
+    
+    Args:
+        V: Value function array (n_states,)
+        P: Transition matrix
+        R: Reward matrix
+        gamma: Discount factor
+        
+    Returns:
+        new_policy: Improved policy array
+    """
+    if verbose:
+        print("********Starting new policy improvement************")
+
+    n_states = P.shape[0]
+    n_actions = P.shape[1]
+    
+    new_policy = np.zeros(n_states, dtype=int)
+    
+    for s in range(n_states):
+        # Find action that maximizes Q(s, a)
+        action_values = np.zeros(n_actions)
+        for a in range(n_actions):
+            action_values[a] = calculate_state_value(s, a, P, R, V, gamma)
+            
+        best_action = np.argmax(action_values)
+        new_policy[s] = best_action
+        
+    return new_policy
+
+def calculate_state_value(s, a, P, R, V, gamma):
+    """
+    Calculate the value of taking action a in state s.
+    V(s) = R(s, a) + gamma * sum(P(s'|s, a) * V(s'))
+    """
+    n_states = P.shape[0]
+    expected_future_val = 0
+    for next_s in range(n_states):
+        expected_future_val += P[s, a, next_s] * V[next_s]
+        
+    return R[s, a] + gamma * expected_future_val
 
 def plot_values(states, values, title="Value Function per State"):
     fig, ax = plt.subplots(figsize=(12, 2))

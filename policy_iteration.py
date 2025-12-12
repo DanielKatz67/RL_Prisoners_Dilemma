@@ -24,14 +24,13 @@ def policy_iteration(P, R, gamma=0.9, theta=1e-6, verbose=False, states=None):
     iteration = 1
 
     if verbose:
-        print("******** Starting new policy iteration for gamma = {} and theta = {} ********".format(gamma, theta))
+        print(f"====================================================================================\n")
+        print(f"******** Starting new policy iteration for gamma = {gamma} and theta = {theta} ********")
     
     while True:
         if verbose:
-            print(f"======================================\n")
-            print(f"=== Policy Iteration {iteration} ===")
-            print(f"=== Policy: {policy} ===\n")
-            print(f"======================================\n")
+            print(f"\n=== Policy Iteration {iteration} ===")
+            print(f"=== Policy: {policy}  ===\n")
             
         # Step 2: Policy Evaluation
         V = policy_evaluation(policy, P, R, V, gamma, theta, verbose)
@@ -40,17 +39,22 @@ def policy_iteration(P, R, gamma=0.9, theta=1e-6, verbose=False, states=None):
         new_policy = policy_improvement(V, P, R, gamma, verbose)
         
         if verbose and states is not None:
+            print("=== Plots: ===")
             plot_values(states, V, title="Value Function per State")
             plot_policy(states, new_policy)
             
         if np.array_equal(new_policy, policy):
             if verbose:
                 print("Policy converged.")
+                print(f"BEST POLICY found for gamma = {gamma} and theta = {theta} is: {policy}\n")
             break
             
         policy = new_policy
         iteration += 1
         
+    if verbose:
+        print(f"====================================================================================\n")
+    
     return policy, V
 
 def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
@@ -74,7 +78,7 @@ def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
     iteration = 1
     
     if verbose:
-        print("********Starting new policy evaluation************")
+        print("******** Starting new policy evaluation ************")
     
     while True:
         delta = 0   
@@ -101,7 +105,7 @@ def policy_evaluation(policy, P, R, V_init, gamma, theta=1e-6, verbose=False):
             break
 
     if verbose:
-        print(f"Policy evaluation took {iteration} iterations.")
+        print(f"Policy evaluation took {iteration} iterations.\n")
             
     return V
 
@@ -119,7 +123,7 @@ def policy_improvement(V, P, R, gamma, verbose):
         new_policy: Improved policy array
     """
     if verbose:
-        print("********Starting new policy improvement************")
+        print("******** Starting new policy improvement ************\n")
 
     n_states = P.shape[0]
     n_actions = P.shape[1]

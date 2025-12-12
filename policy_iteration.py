@@ -39,21 +39,18 @@ def policy_iteration(P, R, gamma=0.9, theta=1e-6, verbose=False, states=None):
         new_policy = policy_improvement(V, P, R, gamma, verbose)
         
         if verbose and states is not None:
-            print("=== Plots: ===")
+            print(f"******** Plots ********")
             plot_values(states, V, title="Value Function per State")
             plot_policy(states, new_policy)
             
         if np.array_equal(new_policy, policy):
             if verbose:
                 print("Policy converged.")
-                print(f"BEST POLICY found for gamma = {gamma} and theta = {theta} is: {policy}\n")
+                print(f"BEST POLICY found for gamma = {gamma} and theta = {theta} is: {new_policy}\n")
             break
             
         policy = new_policy
         iteration += 1
-        
-    if verbose:
-        print(f"====================================================================================\n")
     
     return policy, V
 

@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1765620506.61995 "report.tex" "report.pdf" "report" 1765620507.27687 0
+["pdflatex"] 1765621872.15149 "report.tex" "report.pdf" "report" 1765621872.80906 0
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -116,9 +116,9 @@
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
   "average_cumulative_reward_vs_gamma_by_opponent.png" 1765554306.6725 51140 bb63de3b9950a6508050323f796b4481 ""
   "memory_depth_comparison.png" 1765554306.67292 25241 442fc7f9973113ba43dd3477ac7b26aa ""
-  "report.aux" 1765620507.20307 9361 fa0cdee658d2790a719028fdca708627 "pdflatex"
-  "report.out" 1765620507.20382 4287 965c91beefaf255dc7b1ce177dda5d34 "pdflatex"
-  "report.tex" 1765620478.35831 25899 fa9a1cb4f047deef1dfbc721e82e9211 ""
+  "report.aux" 1765621872.73679 9599 70bded026249638e7380352d3b02947f "pdflatex"
+  "report.out" 1765621872.7375 4287 965c91beefaf255dc7b1ce177dda5d34 "pdflatex"
+  "report.tex" 1765621857.24104 26320 cf059ede8ffbbcc7b5818543feb96996 ""
   (generated)
   "report.aux"
   "report.log"

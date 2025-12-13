@@ -484,7 +484,7 @@ Imperfect TFT & DDDD & DDCC & CCCC & CCCC \\
 ALL-C & 250.00 & 250.00 & 250.00 & 250.00 \\
 ALL-D & 50.00 & 50.00 & 50.00 & 50.00 \\
 TFT & 54.00 & 125.00 & 150.00 & 150.00 \\
-Imperfect TFT & 74.88 & 123.30 & 134.88 & 136.02 \\
+Imperfect TFT & 72.32 & 120.86 & 135.66 & 133.08 \\
 \bottomrule
 \end{tabular}
 \caption{Average cumulative reward over 50 episodes (each 50 steps), using the optimal Memory-1 policy for each $\gamma$.}
@@ -525,7 +525,7 @@ The results:
 ALL-C & 250.0 & 250.0 \\
 ALL-D & 50.0 & 50.0 \\
 TFT & 150.0 & 150.0 \\
-Imperfect TFT & 136.02 & 135.48 \\
+Imperfect TFT & 134.28 & 135.54 \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -552,7 +552,7 @@ because these opponents depend on at most the agent’s last action (or no histo
     \item \textbf{ALL-C (Score 250):} The optimal policy against ALL-C is to always Defect. Since ALL-C always Cooperates, the agent receives the temptation payoff $T=5$ in every round. Over 50 rounds, the total reward is $50 \times 5 = 250$.
     \item \textbf{ALL-D (Score 50):} The optimal policy against ALL-D is to always Defect. Since ALL-D always Defects, the agent receives the punishment payoff $P=1$ in every round. Over 50 rounds, the total reward is $50 \times 1 = 50$. Cooperating would yield the sucker's payoff $S=0$, which is worse.
     \item \textbf{Memory-1 vs Memory-2 (Deterministic Opponents):} For ALL-C, ALL-D, and TFT, the scores for Memory-1 and Memory-2 are identical. This is because these opponents' strategies depend only on the immediate past (or no history at all). Having an extra step of memory (Memory-2) provides no additional predictive power or strategic advantage against them.
-    \item \textbf{Imperfect TFT (Stochastic Differences):} For Imperfect TFT, the scores differ slightly (136.02 vs 135.48) despite the optimal policy being the same (Cooperate). This difference is due to the stochastic nature of the opponent (10\% noise). The variance in random outcomes across the 50 simulation episodes leads to slightly different average rewards, but statistically, the performance is equivalent.
+    \item \textbf{Imperfect TFT (Stochastic Differences):} For Imperfect TFT, the scores differ slightly (134.28 vs 135.54) despite the optimal policy being the same (Cooperate). This difference is due to the stochastic nature of the opponent (10\% noise). The variance in random outcomes across the 50 simulation episodes leads to slightly different average rewards, but statistically, the performance is equivalent.
 \end{itemize}
 
 \subsubsection{Hypothetical Opponent Where Memory-2 Helps}
@@ -685,7 +685,7 @@ Even with 10\% noise, cooperation remains optimal.
 The noise does \emph{lower} the achievable return:
 \[
 \text{TFT reward: } 150.00, \qquad
-\text{Imperfect TFT reward: } 136.02.
+\text{Imperfect TFT reward: } 134.28
 \]
 
 But the optimal policy still prefers cooperation over mutual defection,

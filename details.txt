@@ -1,8 +1,0 @@
-Link to the notebook: 
-https://colab.research.google.com/drive/1sKtxqUexfDJHifzScsT0xeVEiCvKaZRk?usp=sharing
-
-Full name student 1: Avital Fine
-Id student 1: 208253823
-
-Full name student 2: Daniel Katz
-Id student 2: 315114991

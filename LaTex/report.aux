@@ -10,25 +10,61 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.2}Memory-2}{2}{subsubsection.2.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Transition Probability Function}{2}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}General Form}{2}{subsubsection.2.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Opponent Strategies}{3}{subsubsection.2.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Reward Function}{3}{subsection.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Part III: Policy Iteration}{3}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Part IV: Experiments and Analysis}{3}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Discount Factor Analysis}{3}{subsection.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Average Cumulative Reward vs. Discount Factor ($\gamma $) for different opponent strategies.}}{4}{figure.1}\protected@file@percent }
-\newlabel{fig:rewards_vs_gamma}{{1}{4}{Average Cumulative Reward vs. Discount Factor ($\gamma $) for different opponent strategies}{figure.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}When and Why Cooperation Becomes Optimal}{4}{subsubsection.4.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Memory Depth Comparison}{4}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Interpretation}{4}{subsubsection.4.2.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparison of Average Cumulative Rewards for Memory-1 vs. Memory-2 agents.}}{5}{figure.2}\protected@file@percent }
-\newlabel{fig:memory_depth_comparison}{{2}{5}{Comparison of Average Cumulative Rewards for Memory-1 vs. Memory-2 agents}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Hypothetical Opponent Where Memory-2 Helps}{5}{subsubsection.4.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Why Memory-2 is Required.}{6}{section*.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Example Interaction (10 Rounds)}{6}{subsubsection.4.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Analysis of Point Loss.}{6}{section*.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Why Memory-2 Strictly Outperforms Memory-1}{7}{subsubsection.4.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Conclusion.}{7}{section*.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Noise Analysis: TFT vs Imperfect TFT}{7}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Interpretation}{7}{subsubsection.4.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Summary}{8}{section.5}\protected@file@percent }
-\gdef \@abspage@last{8}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Transition probabilities $P(s'\mid s,a)$ for Memory-1 against ALL-C.}}{2}{table.1}\protected@file@percent }
+\newlabel{tab:m1-allc}{{1}{2}{Transition probabilities $P(s'\mid s,a)$ for Memory-1 against ALL-C}{table.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Transition probabilities $P(s'\mid s,a)$ for Memory-1 against ALL-D.}}{3}{table.2}\protected@file@percent }
+\newlabel{tab:m1-alld}{{2}{3}{Transition probabilities $P(s'\mid s,a)$ for Memory-1 against ALL-D}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Transition probabilities $P(s'\mid s,a)$ for Memory-1 against TFT.}}{3}{table.3}\protected@file@percent }
+\newlabel{tab:m1-tft}{{3}{3}{Transition probabilities $P(s'\mid s,a)$ for Memory-1 against TFT}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Memory-1 vs Imperfect TFT for states with $a_{t-1}^A=C$ (opp: 0.9 $C$, 0.1 $D$).}}{3}{table.4}\protected@file@percent }
+\newlabel{tab:m1-imperfecttft-c}{{4}{3}{Memory-1 vs Imperfect TFT for states with $a_{t-1}^A=C$ (opp: 0.9 $C$, 0.1 $D$)}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Memory-1 vs Imperfect TFT for states with $a_{t-1}^A=D$ (opp: 0.9 $D$, 0.1 $C$).}}{3}{table.5}\protected@file@percent }
+\newlabel{tab:m1-imperfecttft-d}{{5}{3}{Memory-1 vs Imperfect TFT for states with $a_{t-1}^A=D$ (opp: 0.9 $D$, 0.1 $C$)}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Transition probabilities $P(s'\mid s,a)$ for Memory-2 against ALL-C.}}{4}{table.6}\protected@file@percent }
+\newlabel{tab:m2-allc}{{6}{4}{Transition probabilities $P(s'\mid s,a)$ for Memory-2 against ALL-C}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Transition probabilities $P(s'\mid s,a)$ for Memory-2 against ALL-D.}}{4}{table.7}\protected@file@percent }
+\newlabel{tab:m2-alld}{{7}{4}{Transition probabilities $P(s'\mid s,a)$ for Memory-2 against ALL-D}{table.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Transition probabilities for Memory-2 against TFT (opponent copies $a_{t-1}^A$ deterministically).}}{5}{table.8}\protected@file@percent }
+\newlabel{tab:m2-tft}{{8}{5}{Transition probabilities for Memory-2 against TFT (opponent copies $a_{t-1}^A$ deterministically)}{table.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Memory-2 vs Imperfect TFT for states with $a_{t-1}^A=C$ (opp: 0.9 $C$, 0.1 $D$).}}{5}{table.9}\protected@file@percent }
+\newlabel{tab:m2-imperfecttft-c}{{9}{5}{Memory-2 vs Imperfect TFT for states with $a_{t-1}^A=C$ (opp: 0.9 $C$, 0.1 $D$)}{table.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Memory-2 vs Imperfect TFT for states with $a_{t-1}^A=D$ (opp: 0.9 $D$, 0.1 $C$).}}{6}{table.10}\protected@file@percent }
+\newlabel{tab:m2-imperfecttft-d}{{10}{6}{Memory-2 vs Imperfect TFT for states with $a_{t-1}^A=D$ (opp: 0.9 $D$, 0.1 $C$)}{table.10}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Opponent Strategies}{6}{subsubsection.2.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Reward Function}{6}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.4.1}Memory-1 Reward Tables}{7}{subsubsection.2.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Memory-1 rewards vs ALL-C (opponent always cooperates).}}{7}{table.11}\protected@file@percent }
+\newlabel{tab:r-m1-allc}{{11}{7}{Memory-1 rewards vs ALL-C (opponent always cooperates)}{table.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Memory-1 rewards vs ALL-D (opponent always defects).}}{7}{table.12}\protected@file@percent }
+\newlabel{tab:r-m1-alld}{{12}{7}{Memory-1 rewards vs ALL-D (opponent always defects)}{table.12}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Memory-1 rewards vs TFT (opponent copies agent's previous action).}}{7}{table.13}\protected@file@percent }
+\newlabel{tab:r-m1-tft}{{13}{7}{Memory-1 rewards vs TFT (opponent copies agent's previous action)}{table.13}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Memory-1 rewards vs Imperfect TFT (0.9 copies $a_{t-1}^A$, 0.1 does opposite).}}{7}{table.14}\protected@file@percent }
+\newlabel{tab:r-m1-imperfecttft}{{14}{7}{Memory-1 rewards vs Imperfect TFT (0.9 copies $a_{t-1}^A$, 0.1 does opposite)}{table.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Part III: Policy Iteration}{7}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Part IV: Experiments and Analysis}{8}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental Setup}{8}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Simulation verification.}{8}{section*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Results Summary}{8}{subsection.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Optimal policies (Memory-1).}}{8}{table.15}\protected@file@percent }
+\newlabel{tab:optimal_policies_m1}{{15}{8}{Optimal policies (Memory-1)}{table.15}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {16}{\ignorespaces Average cumulative reward over 50 episodes (each 50 steps), using the optimal Memory-1 policy for each $\gamma $.}}{8}{table.16}\protected@file@percent }
+\newlabel{tab:avg_rewards_m1}{{16}{8}{Average cumulative reward over 50 episodes (each 50 steps), using the optimal Memory-1 policy for each $\gamma $}{table.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Discount Factor Analysis}{8}{subsection.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Average Cumulative Reward vs. Discount Factor ($\gamma $) for different opponent strategies.}}{9}{figure.1}\protected@file@percent }
+\newlabel{fig:rewards_vs_gamma}{{1}{9}{Average Cumulative Reward vs. Discount Factor ($\gamma $) for different opponent strategies}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}When and Why Cooperation Becomes Optimal}{9}{subsubsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Memory Depth Comparison}{9}{subsection.4.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Comparison of Average Cumulative Rewards for Memory-1 vs. Memory-2 agents.}}{10}{figure.2}\protected@file@percent }
+\newlabel{fig:memory_depth_comparison}{{2}{10}{Comparison of Average Cumulative Rewards for Memory-1 vs. Memory-2 agents}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Interpretation}{10}{subsubsection.4.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Hypothetical Opponent Where Memory-2 Helps}{10}{subsubsection.4.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Why Memory-2 is Required.}{11}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.3}Example Interaction (10 Rounds)}{11}{subsubsection.4.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Analysis of Point Loss.}{11}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.4}Why Memory-2 Strictly Outperforms Memory-1}{12}{subsubsection.4.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Conclusion.}{12}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Noise Analysis: TFT vs Imperfect TFT}{12}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.1}Interpretation}{13}{subsubsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Summary}{13}{section.5}\protected@file@percent }
+\gdef \@abspage@last{13}

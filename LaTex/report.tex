@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\usepackage{float} % gives [H]
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -95,6 +96,234 @@ For example, against an \textbf{ALL-C} opponent, any transition to a state where
 P(s' = (\dots, D) | s, a) = 0.
 \]
 
+% =========================
+% Memory-1 tables
+% =========================
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C \rightarrow$ Next State & Action $D \rightarrow$ Next State \\
+\midrule
+(C, C) & (C, C) : 1.0 & (D, C) : 1.0 \\
+(C, D) & (C, C) : 1.0 & (D, C) : 1.0 \\
+(D, C) & (C, C) : 1.0 & (D, C) : 1.0 \\
+(D, D) & (C, C) : 1.0 & (D, C) : 1.0 \\
+\bottomrule
+\end{tabular}
+\caption{Transition probabilities $P(s'\mid s,a)$ for Memory-1 against ALL-C.}
+\label{tab:m1-allc}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C \rightarrow$ Next State & Action $D \rightarrow$ Next State \\
+\midrule
+(C, C) & (C, D) : 1.0 & (D, D) : 1.0 \\
+(C, D) & (C, D) : 1.0 & (D, D) : 1.0 \\
+(D, C) & (C, D) : 1.0 & (D, D) : 1.0 \\
+(D, D) & (C, D) : 1.0 & (D, D) : 1.0 \\
+\bottomrule
+\end{tabular}
+\caption{Transition probabilities $P(s'\mid s,a)$ for Memory-1 against ALL-D.}
+\label{tab:m1-alld}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C \rightarrow$ Next State & Action $D \rightarrow$ Next State \\
+\midrule
+(C, C) & (C, C) : 1.0 & (D, C) : 1.0 \\
+(C, D) & (C, C) : 1.0 & (D, C) : 1.0 \\
+(D, C) & (C, D) : 1.0 & (D, D) : 1.0 \\
+(D, D) & (C, D) : 1.0 & (D, D) : 1.0 \\
+\bottomrule
+\end{tabular}
+\caption{Transition probabilities $P(s'\mid s,a)$ for Memory-1 against TFT.}
+\label{tab:m1-tft}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C$ & Action $D$ \\
+\midrule
+(C, C) & (C,C):0.9, (C,D):0.1 & (D,C):0.9, (D,D):0.1 \\
+(C, D) & (C,C):0.9, (C,D):0.1 & (D,C):0.9, (D,D):0.1 \\
+\bottomrule
+\end{tabular}
+\caption{Memory-1 vs Imperfect TFT for states with $a_{t-1}^A=C$ (opp: 0.9 $C$, 0.1 $D$).}
+\label{tab:m1-imperfecttft-c}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C$ & Action $D$ \\
+\midrule
+(D, C) & (C,C):0.1, (C,D):0.9 & (D,C):0.1, (D,D):0.9 \\
+(D, D) & (C,C):0.1, (C,D):0.9 & (D,C):0.1, (D,D):0.9 \\
+\bottomrule
+\end{tabular}
+\caption{Memory-1 vs Imperfect TFT for states with $a_{t-1}^A=D$ (opp: 0.9 $D$, 0.1 $C$).}
+\label{tab:m1-imperfecttft-d}
+\end{table}
+
+% =========================
+% Memory-2 tables
+% =========================
+
+\begin{table}[H]
+\centering
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+Current State $(h^A,h^O)$ & Action $C \rightarrow$ Next State & Action $D \rightarrow$ Next State \\
+\midrule
+(CC, CC) & (CC, CC) : 1.0 & (CD, CC) : 1.0 \\
+(CC, CD) & (CC, DC) : 1.0 & (CD, DC) : 1.0 \\
+(CC, DC) & (CC, CC) : 1.0 & (CD, CC) : 1.0 \\
+(CC, DD) & (CC, DC) : 1.0 & (CD, DC) : 1.0 \\
+(CD, CC) & (DC, CC) : 1.0 & (DD, CC) : 1.0 \\
+(CD, CD) & (DC, DC) : 1.0 & (DD, DC) : 1.0 \\
+(CD, DC) & (DC, CC) : 1.0 & (DD, CC) : 1.0 \\
+(CD, DD) & (DC, DC) : 1.0 & (DD, DC) : 1.0 \\
+(DC, CC) & (CC, CC) : 1.0 & (CD, CC) : 1.0 \\
+(DC, CD) & (CC, DC) : 1.0 & (CD, DC) : 1.0 \\
+(DC, DC) & (CC, CC) : 1.0 & (CD, CC) : 1.0 \\
+(DC, DD) & (CC, DC) : 1.0 & (CD, DC) : 1.0 \\
+(DD, CC) & (DC, CC) : 1.0 & (DD, CC) : 1.0 \\
+(DD, CD) & (DC, DC) : 1.0 & (DD, DC) : 1.0 \\
+(DD, DC) & (DC, CC) : 1.0 & (DD, CC) : 1.0 \\
+(DD, DD) & (DC, DC) : 1.0 & (DD, DC) : 1.0 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Transition probabilities $P(s'\mid s,a)$ for Memory-2 against ALL-C.}
+\label{tab:m2-allc}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+Current State $(h^A,h^O)$ & Action $C \rightarrow$ Next State & Action $D \rightarrow$ Next State \\
+\midrule
+(CC, CC) & (CC, CD) : 1.0 & (CD, CD) : 1.0 \\
+(CC, CD) & (CC, DD) : 1.0 & (CD, DD) : 1.0 \\
+(CC, DC) & (CC, CD) : 1.0 & (CD, CD) : 1.0 \\
+(CC, DD) & (CC, DD) : 1.0 & (CD, DD) : 1.0 \\
+(CD, CC) & (DC, CD) : 1.0 & (DD, CD) : 1.0 \\
+(CD, CD) & (DC, DD) : 1.0 & (DD, DD) : 1.0 \\
+(CD, DC) & (DC, CD) : 1.0 & (DD, CD) : 1.0 \\
+(CD, DD) & (DC, DD) : 1.0 & (DD, DD) : 1.0 \\
+(DC, CC) & (CC, CD) : 1.0 & (CD, CD) : 1.0 \\
+(DC, CD) & (CC, DD) : 1.0 & (CD, DD) : 1.0 \\
+(DC, DC) & (CC, CD) : 1.0 & (CD, CD) : 1.0 \\
+(DC, DD) & (CC, DD) : 1.0 & (CD, DD) : 1.0 \\
+(DD, CC) & (DC, CD) : 1.0 & (DD, CD) : 1.0 \\
+(DD, CD) & (DC, DD) : 1.0 & (DD, DD) : 1.0 \\
+(DD, DC) & (DC, CD) : 1.0 & (DD, CD) : 1.0 \\
+(DD, DD) & (DC, DD) : 1.0 & (DD, DD) : 1.0 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Transition probabilities $P(s'\mid s,a)$ for Memory-2 against ALL-D.}
+\label{tab:m2-alld}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllll}
+\toprule
+Current State & Agent's $a_{t-1}^A$ & Opp Response & Action $C\rightarrow$ Next & Action $D\rightarrow$ Next \\
+\midrule
+(CC, CC) & C & C & (CC, CC) : 1.0 & (CD, CC) : 1.0 \\
+(CC, CD) & C & C & (CC, DC) : 1.0 & (CD, DC) : 1.0 \\
+(CC, DC) & D & D & (CC, CD) : 1.0 & (CD, CD) : 1.0 \\
+(CC, DD) & D & D & (CC, DD) : 1.0 & (CD, DD) : 1.0 \\
+(CD, CC) & C & C & (DC, CC) : 1.0 & (DD, CC) : 1.0 \\
+(CD, CD) & C & C & (DC, DC) : 1.0 & (DD, DC) : 1.0 \\
+(CD, DC) & D & D & (DC, CD) : 1.0 & (DD, CD) : 1.0 \\
+(CD, DD) & D & D & (DC, DD) : 1.0 & (DD, DD) : 1.0 \\
+(DC, CC) & C & C & (CC, CC) : 1.0 & (CD, CC) : 1.0 \\
+(DC, CD) & C & C & (CC, DC) : 1.0 & (CD, DC) : 1.0 \\
+(DC, DC) & D & D & (CC, CD) : 1.0 & (CD, CD) : 1.0 \\
+(DC, DD) & D & D & (CC, DD) : 1.0 & (CD, DD) : 1.0 \\
+(DD, CC) & C & C & (DC, CC) : 1.0 & (DD, CC) : 1.0 \\
+(DD, CD) & C & C & (DC, DC) : 1.0 & (DD, DC) : 1.0 \\
+(DD, DC) & D & D & (DC, CD) : 1.0 & (DD, CD) : 1.0 \\
+(DD, DD) & D & D & (DC, DD) : 1.0 & (DD, DD) : 1.0 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Transition probabilities for Memory-2 against TFT (opponent copies $a_{t-1}^A$ deterministically).}
+\label{tab:m2-tft}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C$ & Action $D$ \\
+\midrule
+(CC, CC) & (CC,CC):0.9, (CC,CD):0.1 & (CD,CC):0.9, (CD,CD):0.1 \\
+(CC, CD) & (CC,DC):0.9, (CC,DD):0.1 & (CD,DC):0.9, (CD,DD):0.1 \\
+(CD, CC) & (DC,CC):0.9, (DC,CD):0.1 & (DD,CC):0.9, (DD,CD):0.1 \\
+(CD, CD) & (DC,DC):0.9, (DC,DD):0.1 & (DD,DC):0.9, (DD,DD):0.1 \\
+(DC, CC) & (CC,CC):0.9, (CC,CD):0.1 & (CD,CC):0.9, (CD,CD):0.1 \\
+(DC, CD) & (CC,DC):0.9, (CC,DD):0.1 & (CD,DC):0.9, (CD,DD):0.1 \\
+(DD, CC) & (DC,CC):0.9, (DC,CD):0.1 & (DD,CC):0.9, (DD,CD):0.1 \\
+(DD, CD) & (DC,DC):0.9, (DC,DD):0.1 & (DD,DC):0.9, (DD,DD):0.1 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Memory-2 vs Imperfect TFT for states with $a_{t-1}^A=C$ (opp: 0.9 $C$, 0.1 $D$).}
+\label{tab:m2-imperfecttft-c}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+Current State & Action $C$ & Action $D$ \\
+\midrule
+(CC, DC) & (CC,CC):0.1, (CC,CD):0.9 & (CD,CC):0.1, (CD,CD):0.9 \\
+(CC, DD) & (CC,DC):0.1, (CC,DD):0.9 & (CD,DC):0.1, (CD,DD):0.9 \\
+(CD, DC) & (DC,CC):0.1, (DC,CD):0.9 & (DD,CC):0.1, (DD,CD):0.9 \\
+(CD, DD) & (DC,DC):0.1, (DC,DD):0.9 & (DD,DC):0.1, (DD,DD):0.9 \\
+(DC, DC) & (CC,CC):0.1, (CC,CD):0.9 & (CD,CC):0.1, (CD,CD):0.9 \\
+(DC, DD) & (CC,DC):0.1, (CC,DD):0.9 & (CD,DC):0.1, (CD,DD):0.9 \\
+(DD, DC) & (DC,CC):0.1, (DC,CD):0.9 & (DD,CC):0.1, (DD,CD):0.9 \\
+(DD, DD) & (DC,DC):0.1, (DC,DD):0.9 & (DD,DC):0.1, (DD,DD):0.9 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Memory-2 vs Imperfect TFT for states with $a_{t-1}^A=D$ (opp: 0.9 $D$, 0.1 $C$).}
+\label{tab:m2-imperfecttft-d}
+\end{table}
+
 \subsubsection{Opponent Strategies}
 \begin{itemize}
     \item \textbf{ALL-C:} $P(a_t^O=C|s) = 1$.
@@ -126,6 +355,76 @@ For stochastic opponents (Imperfect TFT), the expected reward is a weighted aver
 R(s, C) = 0.9 \cdot 3 + 0.1 \cdot 0 = 2.7.
 \]
 
+\subsubsection{Memory-1 Reward Tables}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+State & $R(s,C)$ & $R(s,D)$ \\
+\midrule
+(C,C) & 3 & 5 \\
+(C,D) & 3 & 5 \\
+(D,C) & 3 & 5 \\
+(D,D) & 3 & 5 \\
+\bottomrule
+\end{tabular}
+\caption{Memory-1 rewards vs ALL-C (opponent always cooperates).}
+\label{tab:r-m1-allc}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+State & $R(s,C)$ & $R(s,D)$ \\
+\midrule
+(C,C) & 0 & 1 \\
+(C,D) & 0 & 1 \\
+(D,C) & 0 & 1 \\
+(D,D) & 0 & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Memory-1 rewards vs ALL-D (opponent always defects).}
+\label{tab:r-m1-alld}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+State & $R(s,C)$ & $R(s,D)$ \\
+\midrule
+(C,C) & 3 & 5 \\
+(C,D) & 3 & 5 \\
+(D,C) & 0 & 1 \\
+(D,D) & 0 & 1 \\
+\bottomrule
+\end{tabular}
+\caption{Memory-1 rewards vs TFT (opponent copies agent's previous action).}
+\label{tab:r-m1-tft}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+State & $R(s,C)$ & $R(s,D)$ \\
+\midrule
+(C,C) & $0.9\cdot 3 + 0.1\cdot 0 = 2.7$ & $0.9\cdot 5 + 0.1\cdot 1 = 4.6$ \\
+(C,D) & $0.9\cdot 3 + 0.1\cdot 0 = 2.7$ & $0.9\cdot 5 + 0.1\cdot 1 = 4.6$ \\
+(D,C) & $0.9\cdot 0 + 0.1\cdot 3 = 0.3$ & $0.9\cdot 1 + 0.1\cdot 5 = 1.4$ \\
+(D,D) & $0.9\cdot 0 + 0.1\cdot 3 = 0.3$ & $0.9\cdot 1 + 0.1\cdot 5 = 1.4$ \\
+\bottomrule
+\end{tabular}
+\caption{Memory-1 rewards vs Imperfect TFT (0.9 copies $a_{t-1}^A$, 0.1 does opposite).}
+\label{tab:r-m1-imperfecttft}
+\end{table}
+
 \section{Part III: Policy Iteration}
 We implemented classical tabular Policy Iteration with:
 \begin{enumerate}
@@ -142,10 +441,60 @@ Convergence was rapid across all opponents due to the small state space.
 
 \section{Part IV: Experiments and Analysis}
 
+\subsection{Experimental Setup}
+We evaluated Policy Iteration under the following configuration:
+\begin{itemize}
+    \item \textbf{Discount Factors:} $\gamma \in \{0.1, 0.5, 0.9, 0.99\}$
+    \item \textbf{Opponents:} ALL-C, ALL-D, TFT, Imperfect TFT
+    \item \textbf{Memory Schemes:} Memory-1, Memory-2
+    \item \textbf{Simulation:} 50 episodes $\times$ 50 steps each
+\end{itemize}
+
+\paragraph{Simulation verification.}
+For each opponent and discount factor, after computing the optimal policy via Policy Iteration,
+we executed the policy in the environment for 50 episodes (50 steps each) and report the
+average cumulative reward as an empirical validation.
+
+\subsection{Results Summary}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Opponent} & $\gamma=0.1$ & $\gamma=0.5$ & $\gamma=0.9$ & $\gamma=0.99$ \\
+\midrule
+ALL-C & DDDD & DDDD & DDDD & DDDD \\
+ALL-D & DDDD & DDDD & DDDD & DDDD \\
+TFT & DDDD & DDCC & CCCC & CCCC \\
+Imperfect TFT & DDDD & DDCC & CCCC & CCCC \\
+\bottomrule
+\end{tabular}
+\caption{Optimal policies (Memory-1).}
+\label{tab:optimal_policies_m1}
+\end{table}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Opponent} & $\gamma=0.1$ & $\gamma=0.5$ & $\gamma=0.9$ & $\gamma=0.99$ \\
+\midrule
+ALL-C & 250.00 & 250.00 & 250.00 & 250.00 \\
+ALL-D & 50.00 & 50.00 & 50.00 & 50.00 \\
+TFT & 54.00 & 125.00 & 150.00 & 150.00 \\
+Imperfect TFT & 74.88 & 123.30 & 134.88 & 136.02 \\
+\bottomrule
+\end{tabular}
+\caption{Average cumulative reward over 50 episodes (each 50 steps), using the optimal Memory-1 policy for each $\gamma$.}
+\label{tab:avg_rewards_m1}
+\end{table}
+
 \subsection{Discount Factor Analysis}
 We varied $\gamma$ and computed the optimal strategy against different opponents.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{average_cumulative_reward_vs_gamma_by_opponent.png}
     \caption{Average Cumulative Reward vs. Discount Factor ($\gamma$) for different opponent strategies.}
@@ -159,6 +508,11 @@ However, as $\gamma$ increases (e.g., 0.9, 0.99), the agent becomes "far-sighted
 
 For \textbf{ALL-C} and \textbf{ALL-D}, the optimal policy is always to Defect regardless of $\gamma$, as seen by the constant reward lines. Against ALL-C, defecting exploits the opponent forever. Against ALL-D, defecting is the only defense against being exploited.
 
+In our experiments against \textbf{TFT}, we observe a clear transition from defection to cooperation as $\gamma$ increases.
+At $\gamma=0.1$ the optimal policy is \texttt{DDDD}, and at $\gamma=0.5$ it becomes mixed (\texttt{DDCC}).
+When $\gamma$ is high ($\gamma=0.9$ and $0.99$), the optimal policy is \texttt{CCCC} (always cooperate).
+Therefore, based on the tested values, \textbf{cooperation becomes optimal somewhere in the interval} $\boldsymbol{\gamma \in (0.5, 0.9)}$.
+
 \subsection{Memory Depth Comparison}
 We measured average cumulative reward over 50 episodes (each 50 steps).
 The results:
@@ -170,27 +524,35 @@ The results:
 \midrule
 ALL-C & 250.0 & 250.0 \\
 ALL-D & 50.0 & 50.0 \\
-TFT & 225.0 & 225.0 \\
-Imperfect TFT & 136.02 & 135.12 \\
+TFT & 150.0 & 150.0 \\
+Imperfect TFT & 136.02 & 135.48 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{memory_depth_comparison.png}
     \caption{Comparison of Average Cumulative Rewards for Memory-1 vs. Memory-2 agents.}
     \label{fig:memory_depth_comparison}
 \end{figure}
 
-
-
 \subsubsection{Interpretation}
+\paragraph{Does the 10\% noise break cooperation?}
+No. For the high-discount settings where TFT leads to cooperation (e.g., $\gamma=0.9,0.99$),
+the optimal policy against Imperfect TFT remains cooperative (\texttt{CCCC}), although the return decreases.
+
+\paragraph{Forgiving vs. always defect.}
+The agent remains \textbf{forgiving}: it does not revert to \texttt{DDDD} under 10\% noise, and instead sustains cooperation.
+
+Overall, \textbf{Memory-2 does not provide a consistent reward improvement} against ALL-C, ALL-D, TFT, or Imperfect TFT,
+because these opponents depend on at most the agent’s last action (or no history at all).
+
 \begin{itemize}
     \item \textbf{ALL-C (Score 250):} The optimal policy against ALL-C is to always Defect. Since ALL-C always Cooperates, the agent receives the temptation payoff $T=5$ in every round. Over 50 rounds, the total reward is $50 \times 5 = 250$.
     \item \textbf{ALL-D (Score 50):} The optimal policy against ALL-D is to always Defect. Since ALL-D always Defects, the agent receives the punishment payoff $P=1$ in every round. Over 50 rounds, the total reward is $50 \times 1 = 50$. Cooperating would yield the sucker's payoff $S=0$, which is worse.
     \item \textbf{Memory-1 vs Memory-2 (Deterministic Opponents):} For ALL-C, ALL-D, and TFT, the scores for Memory-1 and Memory-2 are identical. This is because these opponents' strategies depend only on the immediate past (or no history at all). Having an extra step of memory (Memory-2) provides no additional predictive power or strategic advantage against them.
-    \item \textbf{Imperfect TFT (Stochastic Differences):} For Imperfect TFT, the scores differ slightly (136.02 vs 135.12) despite the optimal policy being the same (Cooperate). This difference is due to the stochastic nature of the opponent (10\% noise). The variance in random outcomes across the 50 simulation episodes leads to slightly different average rewards, but statistically, the performance is equivalent.
+    \item \textbf{Imperfect TFT (Stochastic Differences):} For Imperfect TFT, the scores differ slightly (136.02 vs 135.48) despite the optimal policy being the same (Cooperate). This difference is due to the stochastic nature of the opponent (10\% noise). The variance in random outcomes across the 50 simulation episodes leads to slightly different average rewards, but statistically, the performance is equivalent.
 \end{itemize}
 
 \subsubsection{Hypothetical Opponent Where Memory-2 Helps}
